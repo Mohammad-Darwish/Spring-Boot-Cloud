@@ -1,7 +1,6 @@
 package com.darwish.springcloud.service;
 
 import com.darwish.springcloud.dto.UserDto;
-import com.darwish.springcloud.entity.User;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    User updateUser(User user);
+    UserDto updateUser(UserDto userDto);
 
     void deleteUserById(Long id);
 }

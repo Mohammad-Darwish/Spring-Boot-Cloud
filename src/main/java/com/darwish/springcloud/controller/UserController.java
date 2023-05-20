@@ -1,7 +1,6 @@
 package com.darwish.springcloud.controller;
 
 import com.darwish.springcloud.dto.UserDto;
-import com.darwish.springcloud.entity.User;
 import com.darwish.springcloud.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,10 +35,10 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody User user) {
-        user.setId(id);
-        User updatedUser = userService.updateUser(user);
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
+                                              @RequestBody UserDto userDto) {
+        userDto.setId(id);
+        UserDto updatedUser = userService.updateUser(userDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

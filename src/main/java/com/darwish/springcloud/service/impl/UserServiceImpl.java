@@ -45,20 +45,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public UserDto updateUser(UserDto userDto) {
+        User user = UserMapper.mapToUser(userDto);
+
         Optional<User> optionalUser = userRepository.findById(user.getId());
         User updatedUser;
         if (!optionalUser.isEmpty()) {
             User existUser = optionalUser.get();
-            existUser.setFirstName(user.getFirstName());
-            existUser.setLastName(user.getLastName());
-            existUser.setEmail(user.getEmail());
+            existUser.setFirstName(userDto.getFirstName());
+            existUser.setLastName(userDto.getLastName());
+            existUser.setEmail(userDto.getEmail());
             updatedUser = userRepository.saveAndFlush(existUser);
         } else {
             log.info("The user doesn't exist, so updating failed");
             updatedUser = optionalUser.get();
         }
-        return updatedUser;
+        return UserMapper.mapToUserDto(updatedUser);
     }
 
     @Override
