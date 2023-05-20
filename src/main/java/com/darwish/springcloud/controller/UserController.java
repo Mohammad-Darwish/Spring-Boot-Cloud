@@ -1,5 +1,6 @@
 package com.darwish.springcloud.controller;
 
+import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.entity.User;
 import com.darwish.springcloud.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        UserDto createdUser = userService.createUser(userDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

@@ -1,11 +1,12 @@
 package com.darwish.springcloud.service;
 
+import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    User createUser(User user);
+    UserDto createUser(UserDto userDto);
 
     User getUserById(Long id);
 
