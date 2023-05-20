@@ -4,11 +4,13 @@ import com.darwish.springcloud.entity.User;
 import com.darwish.springcloud.repository.UserRepository;
 import com.darwish.springcloud.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,5 +31,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUser(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        User updatedUser;
+        if (!optionalUser.isEmpty()) {
+            User existUser = optionalUser.get();
+            existUser.setFirstName(user.getFirstName());
+            existUser.setLastName(user.getLastName());
+            existUser.setEmail(user.getEmail());
+            updatedUser = userRepository.saveAndFlush(existUser);
+        } else {
+            log.info("The user doesn't exist, so updating failed");
+            updatedUser = optionalUser.get();
+        }
+        return updatedUser;
     }
 }
