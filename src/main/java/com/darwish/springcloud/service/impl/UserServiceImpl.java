@@ -2,6 +2,7 @@ package com.darwish.springcloud.service.impl;
 
 import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.entity.User;
+import com.darwish.springcloud.mapper.AutoUserMapper;
 import com.darwish.springcloud.repository.UserRepository;
 import com.darwish.springcloud.service.UserService;
 import lombok.AllArgsConstructor;
@@ -24,12 +25,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
 //        User user = UserMapper.mapToUser(userDto);
-        User user = mapper.map(userDto, User.class);
+//        User user = mapper.map(userDto, User.class);
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
 
         User savedUser = userRepository.saveAndFlush(user);
 
 //        return UserMapper.mapToUserDto(savedUser);
-        return mapper.map(savedUser, UserDto.class);
+//        return mapper.map(savedUser, UserDto.class);
+        return AutoUserMapper.MAPPER.maptoUserDto(savedUser);
     }
 
     @Override
@@ -37,7 +40,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(id);
 
 //        UserDto userDto = UserMapper.mapToUserDto(optionalUser.get());
-        UserDto userDto = mapper.map(optionalUser.get(), UserDto.class);
+//        UserDto userDto = mapper.map(optionalUser.get(), UserDto.class);
+        UserDto userDto = AutoUserMapper.MAPPER.maptoUserDto(optionalUser.get());
         return userDto;
     }
 
@@ -46,13 +50,15 @@ public class UserServiceImpl implements UserService {
         List<User> all = userRepository.findAll();
 
 //        return all.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
-        return all.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+//        return all.stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+        return all.stream().map(AutoUserMapper.MAPPER::maptoUserDto).collect(Collectors.toList());
     }
 
     @Override
     public UserDto updateUser(UserDto userDto) {
 //        User user = UserMapper.mapToUser(userDto);
-        User user = mapper.map(userDto, User.class);
+//        User user = mapper.map(userDto, User.class);
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
 
         Optional<User> optionalUser = userRepository.findById(user.getId());
         User updatedUser;
@@ -67,7 +73,8 @@ public class UserServiceImpl implements UserService {
             updatedUser = optionalUser.get();
         }
 //        return UserMapper.mapToUserDto(updatedUser);
-        return mapper.map(updatedUser, UserDto.class);
+//        return mapper.map(updatedUser, UserDto.class);
+        return AutoUserMapper.MAPPER.maptoUserDto(updatedUser);
     }
 
     @Override
