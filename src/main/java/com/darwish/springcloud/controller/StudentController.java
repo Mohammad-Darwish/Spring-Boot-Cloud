@@ -1,6 +1,6 @@
 package com.darwish.springcloud.controller;
 
-import com.darwish.springcloud.bean.Student;
+import com.darwish.springcloud.model.Student;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

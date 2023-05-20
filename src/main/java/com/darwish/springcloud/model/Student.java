@@ -1,4 +1,4 @@
-package com.darwish.springcloud.bean;
+package com.darwish.springcloud.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
