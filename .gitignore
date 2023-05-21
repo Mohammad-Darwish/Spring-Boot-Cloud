@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+!/src/main/resources/banner.text
+!/src/main/resources/application.properties
+
+!/mvnw
+!/mvnw.cmd
