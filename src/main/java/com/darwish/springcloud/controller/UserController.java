@@ -2,6 +2,7 @@ package com.darwish.springcloud.controller;
 
 import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         UserDto createdUser = userService.createUser(userDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -36,7 +37,7 @@ public class UserController {
 
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
-                                              @RequestBody UserDto userDto) {
+                                              @Valid @RequestBody UserDto userDto) {
         userDto.setId(id);
         UserDto updatedUser = userService.updateUser(userDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
