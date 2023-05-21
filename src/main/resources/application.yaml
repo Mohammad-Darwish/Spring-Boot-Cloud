@@ -1,3 +1,16 @@
 server:
   error:
     include-stacktrace: ON_PARAM
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+Management:
+  endpoint:
+    shutdown:
+      enabled: "true"
+    health:
+      show-details: "always"
