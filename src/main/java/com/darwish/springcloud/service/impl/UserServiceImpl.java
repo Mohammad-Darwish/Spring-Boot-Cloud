@@ -2,6 +2,7 @@ package com.darwish.springcloud.service.impl;
 
 import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.entity.User;
+import com.darwish.springcloud.exception.EmailAlreadyExistException;
 import com.darwish.springcloud.exception.ResourceNotFoundException;
 import com.darwish.springcloud.mapper.UserMapper;
 import com.darwish.springcloud.repository.UserRepository;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,6 +25,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
+
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isPresent()) {
+            throw new EmailAlreadyExistException(String.format("User with email: %s already exist", user.getEmail()));
+        }
 
         User savedUser = userRepository.saveAndFlush(user);
 
