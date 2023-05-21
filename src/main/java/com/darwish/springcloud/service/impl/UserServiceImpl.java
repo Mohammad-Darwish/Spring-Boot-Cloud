@@ -2,6 +2,7 @@ package com.darwish.springcloud.service.impl;
 
 import com.darwish.springcloud.dto.UserDto;
 import com.darwish.springcloud.entity.User;
+import com.darwish.springcloud.exception.ResourceNotFoundException;
 import com.darwish.springcloud.mapper.UserMapper;
 import com.darwish.springcloud.repository.UserRepository;
 import com.darwish.springcloud.service.UserService;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,9 +31,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("User", "id", id)
+        );
 
-        UserDto userDto = UserMapper.mapToUserDto(optionalUser.get());
+        UserDto userDto = UserMapper.mapToUserDto(user);
         return userDto;
     }
 
@@ -48,23 +50,21 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
 
-        Optional<User> optionalUser = userRepository.findById(user.getId());
-        User updatedUser;
-        if (!optionalUser.isEmpty()) {
-            User existUser = optionalUser.get();
-            existUser.setFirstName(userDto.getFirstName());
-            existUser.setLastName(userDto.getLastName());
-            existUser.setEmail(userDto.getEmail());
-            updatedUser = userRepository.saveAndFlush(existUser);
-        } else {
-            log.info("The user doesn't exist, so updating failed");
-            updatedUser = optionalUser.get();
-        }
+        User existUser = userRepository.findById(user.getId()).orElseThrow(
+            () -> new ResourceNotFoundException("User", "id", user.getId())
+        );
+        existUser.setFirstName(userDto.getFirstName());
+        existUser.setLastName(userDto.getLastName());
+        existUser.setEmail(userDto.getEmail());
+        User updatedUser = userRepository.saveAndFlush(existUser);
         return UserMapper.mapToUserDto(updatedUser);
     }
 
     @Override
     public void deleteUserById(Long id) {
+        userRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("User", "id", id)
+        );
         userRepository.deleteById(id);
     }
 }
